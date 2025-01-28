@@ -16,17 +16,30 @@ pub struct Epic {
 
 impl Epic {
     pub fn new(name: String, description: String) -> Self {
-        todo!() //by default the status should be set to open, and the stories should be an empty vector
+        // todo!() //by default the status should be set to open, and the stories should be an empty vector
+        Epic {
+            name,
+            description,
+            status: Status::Open,
+            stories: vec![],
+        }
     }
 }
 
 pub struct Story {
-    // TODO: add public fields
+    pub name: String,
+    pub description: String,
+    pub status: Status,
 }
 
 impl Story {
     pub fn new(name: String, description: String) -> Self {
-        todo!() // by default the status should be set to open
+        // todo!() // by default the status should be set to open
+        Story {
+            name,
+            description,
+            status: Status::Open,
+        }
     }
 }
 
