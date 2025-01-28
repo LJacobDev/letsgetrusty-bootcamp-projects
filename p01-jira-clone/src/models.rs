@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 //TODO: derive the appropriate traits
+#[derive(PartialEq, Debug)]
 pub enum Status {
     Open,
     InProgress,
@@ -9,6 +10,7 @@ pub enum Status {
 }
 
 //TODO: derive the appropriate traits
+#[derive(PartialEq, Debug)]
 pub struct Epic {
     pub name: String,
     pub description: String,
@@ -29,6 +31,7 @@ impl Epic {
 }
 
 //TODO: derive the appropriate traits
+#[derive(PartialEq, Debug)]
 pub struct Story {
     pub name: String,
     pub description: String,
@@ -47,6 +50,7 @@ impl Story {
 }
 
 //TODO: derive the appropriate traits
+#[derive(PartialEq, Debug)]
 pub struct DBState {
     // This struct represents the entire db state which includes the last_item_id, epics, and stories
     // add public fields
