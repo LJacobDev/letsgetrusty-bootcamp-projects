@@ -1,0 +1,82 @@
+Some Recommendations from the bootcamp for how to proceed with this project:
+
+
+# Recommendations
+
+Here's a list of recommended action items to do during and after the development, to help you more effectively build the project and learn from the project.
+
+During Development:
+
+    You can either create your own Rust project and copy over the code in each step or clone this repo and finish the steps directly in this repo.
+
+    Check the project description/requirements to make sure you are building what is asked of you.
+    
+    Refactor as you implement. Keep your code clean and compartmentalized. Doing so makes debugging exponentially easier, as your implementation grows.
+    
+    Make sure your code compiles and all tests are passing (if applicable) before moving on to the next step.
+
+    If you get stuck, ask for help in the Discord server or look at the next step for the solution to the current step.
+
+
+After Development:
+
+    Run through the provided manual test cases (included in the Stage 3 README), and fix any bugs! You are almost done, so finish the project strong!
+
+    Post your completed project on GitHub
+
+    After completing the project feel free to modify the program by changing the architecture, adding features, etc. This will help you make the project your own and better internalize the lessons you've learned.
+
+
+
+
+
+# FAQs
+
+Will there a template to build the project on top of?
+
+Yes. Each step has a partially built Rust project for you to finish. Stages and steps build on top of each other until you have a completed project.
+
+
+Should my implementation look exactly like the solution?
+
+Your code may differ from the solution, as long as your code compiles, tests are passing, and the program works as intended you are in good shape. Also after completing the project feel free to modify the program by changing the architecture, adding features, etc.
+
+
+NOTE: If you don't know how to implement a TODO item, look at the corresponding test to see what is expected.
+
+
+
+
+# Stages Overview
+
+The project is split into multiple stages. Please keep in mind, some implementation choices are made to minimize the scope of the project, so we can focus on the learning and implementing Rust related concepts. Here's an overview of the stages:
+
+### Stage 1
+
+Database and Models
+
+In this state we will design our models, persist them in a JSON file, and build CRUD operations for Epics and Stories.
+
+### Stage 2
+
+UI (pages and prompts)
+
+In this state we will implement the user interface for our application.
+
+### Stage 3
+
+Navigation and Program Loop
+
+In this stage we will hook up our persistent storage component to the UI. We will also implement navigation and the program loop.
+
+
+
+
+
+
+
+Stage 1 overview:
+
+Database and Models
+
+
