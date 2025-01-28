@@ -187,6 +187,13 @@ A few dependencies are also being added:
 Complete this step by finshing the TODO items in db.rs and models.rs
 
 
+-- currently done adding PartialEq and Debug derive statements,
+
+-- next the todo!() macros need to be cleared out in db.rs and then this step will be complete
+
+-- refactoring might be good, it's possible to reduce repeated code in the db.rs tests module
+
+
 Step 3:
 
 Add CRUD operations for Epics/Stories
