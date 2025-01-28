@@ -2,7 +2,7 @@
 
 This project begins with starter files provided by the Lets Get Rusty Developer Bootcamp.  The student builds out the planned functionality by completing TODO items found throughout the code.
 
-The initial commit will be of only the starting files having been set up, in their state before having begun work on them.
+A beginning commit will made be of only the starting files having been set up, in their state before having begun work on them.
 
 
 The project aims to build two primary features like those of Jira:

@@ -79,4 +79,119 @@ Stage 1 overview:
 
 Database and Models
 
+"In backend development projects, the database design is often the very first task to complete.  The database design determines what and how information is imported and stores for repeates usages"
 
+"While designing the databse (what technologies to use, how to model it, etc), we can very quickly assess if the project is feasible and if we can meet the requirements"
+
+"In this project, we will persist Epic and Story records in a JSON file to keep things as simple as possible.
+
+The JSON model contains the following components:
+
+    last_item_id
+
+        A global integer ID counter for both Epics and Stories.  Each newly created Epic/Story will increment the counter.
+
+    epics
+
+        A mapping between Epic IDs and the actual Epics.  An Epic will consist of a list of Stories in the form of Story IDs.
+
+    stories
+
+        A mapping between Story IDs and actual Stories
+
+    epic and story each have:
+
+        name
+
+        description
+
+        status
+
+    status can be:
+
+        Open
+
+        InProgress
+
+        Resolved
+
+        Closed"
+
+
+
+
+The file will be stored in data/db.json
+
+Example of what the JSON file will look like:
+
+{
+    "last_item_id": 3,
+    "epics": {
+        "1": {
+            "name": "Epic - Project 1",
+            "description": "This is Project 1 for the Bootcamp",
+            "status": "InProgress",
+            "stories": [
+                2,
+                3
+            ]
+        }
+    },
+    "stories": {
+        "2": {
+            "name": "Story - Project 1 Solution",
+            "description": "Please provide full implement for Project 1",
+            "status": "Closed"
+        },
+        "3": {
+            "name": "Story - Project 1 README",
+            "description": "Please create README file for Project 1",
+            "status": "InProgress"
+        }
+    }
+}
+
+
+Step 1:
+
+Modeling the JSON representation in Rust
+
+Take the JSON representation and translate it into Rust Structs and Enums.  Do this by completing the TODO items in models.rs
+
+
+Step 2:
+
+Reading and writing to the JSON file
+
+a new file called db.rs will be added.  This is where the logic will be stored which handles reading and writing the JSON file.
+
+This file contains two items: Database and JSONFileDatabase.
+
+Database is a trait with two methods, read_db and write_db
+
+For simplicity, we will read/write the entire state of the database
+
+JSONFileDatabase is a Struct that implements the Database trait.
+
+A few dependencies are also being added:
+
+    anyhow, for error handling
+
+    serde and serde_json for serializing/deserializing JSON
+
+    tempfile, added as a dev dependency to help with testing
+
+Complete this step by finshing the TODO items in db.rs and models.rs
+
+
+Step 3:
+
+Add CRUD operations for Epics/Stories
+
+Another Struct called JiraDatabase has been added to db.rs.  It will contain methods for CRUD operations for Epics and Stories.
+
+Complete this step by finishing the TODO items in db.rs
+
+Note 1: use the anyhow!() macro for error handling 
+
+Note 2: Take a look at the test_utils module.  Because JiraDatabase stores a trait object which can be any type that implement Database, we can create a mock database for testing (MockDB).  Also note that MockDB uses the RefCell smart pointer.  This is because write_db() takes an immutable reference to self and we need some way to work around this constraint
