@@ -158,6 +158,9 @@ Modeling the JSON representation in Rust
 
 Take the JSON representation and translate it into Rust Structs and Enums.  Do this by completing the TODO items in models.rs
 
+-- this is done
+
+
 
 Step 2:
 
