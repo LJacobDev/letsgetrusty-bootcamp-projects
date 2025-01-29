@@ -117,6 +117,7 @@ mod tests {
             assert_eq!(write_result.is_ok(), true);
 
             //TODO: fix this error by delivering the appropriate traits for DBState
+            //this seems to have been done by just deriving PartialEq, Debug on the model.rs contents
             assert_eq!(read_result, state);
         }
     }

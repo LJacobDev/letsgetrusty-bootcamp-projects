@@ -191,6 +191,12 @@ Complete this step by finshing the TODO items in db.rs and models.rs
 
 -- next the todo!() macros need to be cleared out in db.rs and then this step will be complete
 
+    ... I think for this one I need to read the documentation for serde in order to complete it
+        ... it just wants me to read the contents of self.file_path and deserialize it using serde,
+            as well as to serialize db_state into JSON and store it in self.file_path
+
+            
+
 -- refactoring might be good, it's possible to reduce repeated code in the db.rs tests module
 
 
