@@ -16,7 +16,7 @@ struct JSONFileDatabase {
 
 impl Database for JSONFileDatabase {
     fn read_db(&self) -> Result<DBState> {
-        // todo!() //read the contents of self.file_path and deserialize it using serde
+        //read the contents of self.file_path and deserialize it using serde
         let mut file = File::open(&self.file_path)?;
         let mut contents = String::new();
         file.read_to_string(&mut contents)?;
@@ -25,7 +25,7 @@ impl Database for JSONFileDatabase {
     }
 
     fn write_db(&self, db_state: &DBState) -> Result<()> {
-        // todo!() //serialize db_state to JSON and store it in self.file_path
+        //serialize db_state to JSON and store it in self.file_path
         let serialized = serde_json::to_string(db_state)?;
         let mut file = File::create(&self.file_path)?;
         write!(file, "{}", serialized).unwrap();
@@ -131,12 +131,11 @@ mod tests {
 
             //I added this line because the test was failing on the assert_eq!(write_result.is_ok(), true); and I wanted to see what the error was saying.
             //The error from the current moment of debugging is saying that Access is denied (os error 5)
+            //it was because I was using File::open in write_db instead of File::create
             eprint!("{:?}", write_result);
 
             assert_eq!(write_result.is_ok(), true);
 
-            //TODO: fix this error by delivering the appropriate traits for DBState
-            //this seems to have been done by just deriving PartialEq, Debug on the model.rs contents
             assert_eq!(read_result, state);
         }
     }

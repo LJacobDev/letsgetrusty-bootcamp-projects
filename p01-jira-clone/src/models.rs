@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
-//TODO: derive the appropriate traits
+//derive the appropriate traits
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
 pub enum Status {
     Open,
@@ -13,7 +13,7 @@ pub enum Status {
 
 type DbIndex = u16;
 
-//TODO: derive the appropriate traits
+//derive the appropriate traits
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
 pub struct Epic {
     pub name: String,
@@ -34,7 +34,7 @@ impl Epic {
     }
 }
 
-//TODO: derive the appropriate traits
+//derive the appropriate traits
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
 pub struct Story {
     pub name: String,
@@ -53,7 +53,7 @@ impl Story {
     }
 }
 
-//TODO: derive the appropriate traits
+//derive the appropriate traits
 #[derive(PartialEq, Debug, Serialize, Deserialize)]
 pub struct DBState {
     // This struct represents the entire db state which includes the last_item_id, epics, and stories
