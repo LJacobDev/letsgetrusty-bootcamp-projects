@@ -9,13 +9,15 @@ pub enum Status {
     Closed,
 }
 
+type DbIndex = u16;
+
 //TODO: derive the appropriate traits
 #[derive(PartialEq, Debug)]
 pub struct Epic {
     pub name: String,
     pub description: String,
     pub status: Status,
-    pub stories: Vec<u16>,
+    pub stories: Vec<DbIndex>,
 }
 
 impl Epic {
@@ -54,8 +56,8 @@ impl Story {
 pub struct DBState {
     // This struct represents the entire db state which includes the last_item_id, epics, and stories
     // add public fields
-    pub last_item_id: u16,
-    pub epics: HashMap<u16, Epic>,
-    pub stories: HashMap<u16, Story>,
+    pub last_item_id: DbIndex,
+    pub epics: HashMap<DbIndex, Epic>,
+    pub stories: HashMap<DbIndex, Story>,
     // u16 used deliberately as a number with high enough max number but can save a few bits vs using u32
 }

@@ -195,7 +195,10 @@ Complete this step by finshing the TODO items in db.rs and models.rs
         ... it just wants me to read the contents of self.file_path and deserialize it using serde,
             as well as to serialize db_state into JSON and store it in self.file_path
 
-            
+    ... I've read the documentation for serde and serde_json crates, so I think I see what to do with it now
+
+    ... I've modified models.rs to have a type alias of DBIndex instead of using u16 in several places, so now I can change DBIndex to u32 if I want by changing only one line of code instead of four or more
+
 
 -- refactoring might be good, it's possible to reduce repeated code in the db.rs tests module
 
