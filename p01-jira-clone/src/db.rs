@@ -1,3 +1,6 @@
+use std::fs::File;
+use std::io::Write;
+
 use anyhow::Result;
 
 use crate::models::{DBState, Epic, Status, Story};
@@ -17,7 +20,12 @@ impl Database for JSONFileDatabase {
     }
 
     fn write_db(&self, db_state: &DBState) -> Result<()> {
-        todo!() //serialize db_state to JSON and store it in self.file_path
+        // todo!() //serialize db_state to JSON and store it in self.file_path
+        let serialized = serde_json::to_string(db_state)?;
+        let mut file = File::open(&self.file_path)?;
+        write!(file, "{:?}", db_state)?;
+        Ok(())
+
     }
 }
 
@@ -44,7 +52,7 @@ mod tests {
 
         #[test]
         fn read_db_should_fail_with_invalid_json() {
-            //NOTE:  the NamedTempFile's own doc string says that there are security implications that come with using this method, and they naerly just suggest not to use it
+            //NOTE:  the NamedTempFile's own doc string says that there are security implications that come with using this method, and they nearly just suggest not to use it
             let mut tmpfile = tempfile::NamedTempFile::new().unwrap();
 
             let file_contents = r#"{ "last_item_id": 0 epics: {} stories {} }"#;
