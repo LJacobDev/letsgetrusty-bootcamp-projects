@@ -240,6 +240,8 @@ Complete this step by finishing the TODO items in db.rs
 
             ... the 12 or so tests are all that are left to copy over, it would take some time to copy them by hand as it's about 230 lines of code, so I'm considering copying and pasting them instead but I'll want to read them to see both what they're testing for and what their ways of doing things are
 
+                ... about to read over the tests to see what they're doing, then all that will be left to do is to complete the TODO macros and comments
+
 
     ... the TODO thing to complete will be copied during this process
 
@@ -272,3 +274,4 @@ Note 2: Take a look at the test_utils module.  Because JiraDatabase stores a tra
 
         ... the tests in db.rs use repeated code
         ... the structs in models.rs for epic and story could have their common fields made into another struct called Info to help reduce the places where similar code is written
+        ... some of the modules inside db.rs could be extracted to separate files
