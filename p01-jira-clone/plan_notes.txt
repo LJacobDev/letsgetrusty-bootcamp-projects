@@ -200,7 +200,12 @@ Complete this step by finshing the TODO items in db.rs and models.rs
     ... I've modified models.rs to have a type alias of DBIndex instead of using u16 in several places, so now I can change DBIndex to u32 if I want by changing only one line of code instead of four or more
 
 
--- refactoring might be good, it's possible to reduce repeated code in the db.rs tests module
+-- This is done now
+
+
+
+
+
 
 
 Step 3:
@@ -211,6 +216,59 @@ Another Struct called JiraDatabase has been added to db.rs.  It will contain met
 
 Complete this step by finishing the TODO items in db.rs
 
+
+... first steps:
+
+    ... copy the starter code for the new lines that have been newly added, over into my version of db.rs so that I have JiraDatabase and MockDB and test_utils etc
+
+        ... the new code seems to be the following:
+
+            - about 12 tests in the tests module
+
+            - the test_utils module that has MockDB in it
+
+            - there are a few TODOs to complete in those two areas
+
+            - then there is the struct JiraDatabase, and its impl block, which contains 8 function/method signatures that each contain a todo!() macro inside their body
+
+            So to complete this step, 8 function/methods need to be implemented, and a bit in the tests and test_utils modules which mainly seem to just be about adding derive macro statements in those parts
+
+            - it is noted that JiraDatabase and test_utils are both pub whereas JSONFileDatabase is not
+
+            ... I've copied over the starter code for the JiraDataBase and test_utils module by hand so that I'd have a better understanding and feel for what it's doing
+
+
+            ... the 12 or so tests are all that are left to copy over, it would take some time to copy them by hand as it's about 230 lines of code, so I'm considering copying and pasting them instead but I'll want to read them to see both what they're testing for and what their ways of doing things are
+
+
+    ... the TODO thing to complete will be copied during this process
+
+    ... complete the TODOs 
+
+    ... remember to follow the Note 1 and Note 2 comments below:
+
+        ... to do this I want to first read the anyhow documentation and see what that macro does, and more about what anyhow is 
+
+        ... I've read the anyhow documentation enough to see that the anyhow!() macro makes an error from a string or another error, like Err(anyhow!("failed to open file"))
+
+        ... I've also seen how anyhow has a .context method for the Result enum so that if an error is propagated with a try operator, the .context("") can provide extra information for the error output so that it is more clear what is going wrong and where and when it is happening
+
 Note 1: use the anyhow!() macro for error handling 
 
 Note 2: Take a look at the test_utils module.  Because JiraDatabase stores a trait object which can be any type that implement Database, we can create a mock database for testing (MockDB).  Also note that MockDB uses the RefCell smart pointer.  This is because write_db() takes an immutable reference to self and we need some way to work around this constraint
+
+
+
+
+
+
+
+
+
+
+-- refactoring might be good
+
+    ... things that could be refactored:
+
+        ... the tests in db.rs use repeated code
+        ... the structs in models.rs for epic and story could have their common fields made into another struct called Info to help reduce the places where similar code is written
