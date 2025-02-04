@@ -88,13 +88,23 @@ impl JiraDatabase {
         //write_db to write new dbstate to db
         //return the last_item_id in an OK
         //use either try operators or anyhow! macros to handle errors
+
         let mut db_state = self.database.read_db()?;
+
+        //before doing anything at all, make sure that the intended epic_id exists in db_state.epics or else return an error without changing anything
+        if let None = db_state.epics.get(&epic_id) {
+            return Err(anyhow!("Epic_id not found, story creation aborted"));
+        }
+
         db_state.last_item_id += 1;
         db_state.stories.insert(db_state.last_item_id, story);
+
         // db_state.epics.get(epic_id).expect("No epic found at epic_id").stories.push(db_state.last_item_id);
-        let mut epic = db_state.epics.get(&epic_id).expect("Epic not found at this epic_id");
+        let mut epic = db_state.epics.get_mut(&epic_id).expect("Epic not found at this epic_id");
         epic.stories.push(db_state.last_item_id);
+        
         self.database.write_db(&db_state)?;
+
         Ok(db_state.last_item_id)
     }
 
