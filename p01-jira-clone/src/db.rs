@@ -131,11 +131,12 @@ impl JiraDatabase {
         
         //the epic needs to persist until the stories have been deleted, then remove the epic
         match db_state.epics.get(&epic_id) {
-            Some(epic) => {
-                for story in &epic.stories {
-                    //the delete_story test requires that the epic still exist and that it no longer contain the story_id in order for it to pass
+            Some(mut epic) => {
+                for story in epic.stories {
+                    //the delete_story test requires that the epic still exist and that it no longer contains the story_id in order for it to pass
                     //it involves removing the story from epic.stories while making sure that doing so won't compromise the iteration of the for loop itself
-                    self.delete_story(epic_id, *story)?;
+                    epic.stories.retain(|id| *id != story);
+                    self.delete_story(epic_id, story)?;
                 }
                 db_state.epics.remove(&epic_id);
             },
