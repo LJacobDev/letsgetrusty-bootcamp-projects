@@ -1,7 +1,7 @@
 use std::io::Write;
 use std::{fs::File, io::Read};
 
-use anyhow::Result;
+use anyhow::{Result, anyhow};
 
 use crate::models::{DBState, DbIndex, Epic, Status, Story};
 
@@ -62,7 +62,30 @@ impl JiraDatabase {
     }
 
     pub fn create_epic(&self, epic: Epic) -> Result<DbIndex> {
-        todo!()
+        // todo!()
+        // just initial thinking about it, it looks like you're handed an Epic and so you'll want to take a DBState and increment the last_item id and then use that as a key in the epics HashMap to insert it there
+        // by looking at the unit test for this, it is clear that it intends to take a DBState type value and increment its last_item_id counter as well as insert the given epic into its epics HashMap,
+        // and then to return the last_item_id in a Result<> also.  The unit test then checks that the returned value is the same as a db_state's last_item_id and makes sure its .epics HashMap has the expected epic at the key of its id number
+        // to get that DBState I would use read_db and to save a DBstate change I use write_db
+
+        let mut db_state = self.database.read_db().expect("Error reading database inside create_epic method");
+
+        match self.database.read_db() {
+            Ok(mut db_state) => {
+                db_state.last_item_id += 1;
+                db_state.epics.insert(db_state.last_item_id, epic);
+                self.database.write_db(&db_state).expect("Error using write_db inside create_epic method");
+                Ok(db_state.last_item_id)
+            },
+            Err(e) => Err(anyhow!("Error reading database {}", e))
+        }
+
+        // db_state.last_item_id += 1;
+
+        // db_state.epics.insert(db_state.last_item_id, epic);
+
+        // Ok(db_state.last_item_id)
+
     }
 
     pub fn create_story(&self, story: Story, epic_id: DbIndex) -> Result<DbIndex> {

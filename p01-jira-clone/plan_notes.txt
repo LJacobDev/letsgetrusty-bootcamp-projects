@@ -245,7 +245,11 @@ Complete this step by finishing the TODO items in db.rs
 
     ... the TODO thing to complete will be copied during this process
 
-    ... complete the TODOs 
+    ... complete the TODOs
+
+        ... at first, it seems like the todo!() sections are possible to complete with just one line of code in some cases
+
+        ... however, I want to double check that I'm using proper error handling, especially since I'm meant to be using an anyhow!() in there at some point according to note 1
 
     ... remember to follow the Note 1 and Note 2 comments below:
 
