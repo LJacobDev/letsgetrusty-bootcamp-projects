@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 
 //derive the appropriate traits
-#[derive(PartialEq, Debug, Serialize, Deserialize)]
+#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
 pub enum Status {
     Open,
     InProgress,
@@ -11,10 +11,10 @@ pub enum Status {
     Closed,
 }
 
-type DbIndex = u16;
+pub type DbIndex = u16;
 
 //derive the appropriate traits
-#[derive(PartialEq, Debug, Serialize, Deserialize)]
+#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
 pub struct Epic {
     pub name: String,
     pub description: String,
@@ -35,7 +35,7 @@ impl Epic {
 }
 
 //derive the appropriate traits
-#[derive(PartialEq, Debug, Serialize, Deserialize)]
+#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
 pub struct Story {
     pub name: String,
     pub description: String,
@@ -54,7 +54,7 @@ impl Story {
 }
 
 //derive the appropriate traits
-#[derive(PartialEq, Debug, Serialize, Deserialize)]
+#[derive(PartialEq, Debug, Serialize, Deserialize, Clone)]
 pub struct DBState {
     // This struct represents the entire db state which includes the last_item_id, epics, and stories
     // add public fields
