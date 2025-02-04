@@ -245,15 +245,11 @@ Complete this step by finishing the TODO items in db.rs
 
     ... the TODO thing to complete will be copied during this process
 
-    ... complete the TODOs
-
-        ... at first, it seems like the todo!() sections are possible to complete with just one line of code in some cases
-
-        ... however, I want to double check that I'm using proper error handling, especially since I'm meant to be using an anyhow!() in there at some point according to note 1
-
     ... remember to follow the Note 1 and Note 2 comments below:
 
         ... to do this I want to first read the anyhow documentation and see what that macro does, and more about what anyhow is 
+
+                ... this is done
 
         ... I've read the anyhow documentation enough to see that the anyhow!() macro makes an error from a string or another error, like Err(anyhow!("failed to open file"))
 
@@ -261,7 +257,24 @@ Complete this step by finishing the TODO items in db.rs
 
 Note 1: use the anyhow!() macro for error handling 
 
+        ... this is done at least in one place
+
 Note 2: Take a look at the test_utils module.  Because JiraDatabase stores a trait object which can be any type that implement Database, we can create a mock database for testing (MockDB).  Also note that MockDB uses the RefCell smart pointer.  This is because write_db() takes an immutable reference to self and we need some way to work around this constraint
+
+        ... this is done / noted and understood
+
+
+    ... complete the TODOs
+
+        ... at first, it seems like the todo!() sections are possible to complete with just one line of code in some cases
+
+        ... I'm meant to be using an anyhow!() in there at some point according to note 1, so I set up create_epic to use a match statement that enabled returning Err(anyhow!()) in one of the match arms
+
+
+        ... what is left to do:  a few more of the methods of the JiraDatabase such that they can also pass their tests
+
+
+        ... then I want to still double check that I'm using proper error handling
 
 
 
