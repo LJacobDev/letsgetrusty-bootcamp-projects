@@ -91,39 +91,98 @@ impl JiraDatabase {
 
         let mut db_state = self.database.read_db()?;
 
+
+        //using different syntax than usual just to try things out
+
+
         //before doing anything at all, make sure that the intended epic_id exists in db_state.epics or else return an error without changing anything
-        if let None = db_state.epics.get(&epic_id) {
+        let mut epic = db_state.epics.get_mut(&epic_id);
+
+        if let None = epic {
             return Err(anyhow!("Epic_id not found, story creation aborted"));
         }
 
+        //shadowing epic with its own unwrap, becuase it is certain to not be a None by this point
+        let epic = epic.unwrap();
         db_state.last_item_id += 1;
         db_state.stories.insert(db_state.last_item_id, story);
 
-        // db_state.epics.get(epic_id).expect("No epic found at epic_id").stories.push(db_state.last_item_id);
-        let mut epic = db_state.epics.get_mut(&epic_id).expect("Epic not found at this epic_id");
         epic.stories.push(db_state.last_item_id);
-        
+
         self.database.write_db(&db_state)?;
 
         Ok(db_state.last_item_id)
     }
 
     pub fn delete_epic(&self, epic_id: DbIndex) -> Result<()> {
-        todo!()
+        // todo!()
         //read_db to get a dbstate to mutate
         //delete epic_id key from dbstate.epics hashmap (error handling if key doesn't exist)
         //write_db
         //return Ok(())
         //there will still be the stories that this epic was a part of, now without an associated epic to link them to
         //you might want to delete all its stories by calling delete_story on each id in its vector before removing it
+        
+        // * the unit test for this is expecting all the stories in the epic to no longer exist as well
+
+        let mut db_state = self.database.read_db()?;
+
+        eprintln!("{:?}", db_state);
+        
+        //the epic needs to persist until the stories have been deleted, then remove the epic
+        match db_state.epics.get(&epic_id) {
+            Some(epic) => {
+                for story in &epic.stories {
+                    //the delete_story test requires that the epic still exist and that it no longer contain the story_id in order for it to pass
+                    //it involves removing the story from epic.stories while making sure that doing so won't compromise the iteration of the for loop itself
+                    self.delete_story(epic_id, *story)?;
+                }
+                db_state.epics.remove(&epic_id);
+            },
+            None => {
+                return Err(anyhow!("No epic found at this epic_id"));
+            }
+        }
+
+        eprintln!("{:?}", db_state);
+
+        self.database.write_db(&db_state)?;
+        
+        Ok(())
     }
 
     pub fn delete_story(&self, epic_id: DbIndex, story_id: DbIndex) -> Result<()> {
-        todo!()
+        // todo!()
         //read_db
         //delete story_id from stories hashmap
         //remove story_id from stories vec in epic hashmap at key epic_id
         //write_db
+
+        // thought process:
+        // you would think that this method should remove the story from the stories hashmap, but also remove the story_id from the epic's stories vector
+        // but I need to think about that more because delete_story is also being called from delete_epic so the epic might already be gone by the time this is being called
+        // and I might need to rewrite that to only remove the epic once it has first deleted all its stories
+
+        let mut db_state = self.database.read_db()?;
+
+        //this code block is expecting db_state to mutate so that the story at story_id is no longer present,
+        //but the cargo test run is showing that the story is still contained inside of it even though it's saying "story_id removed successfully"
+        eprintln!("{db_state:?}");
+        match db_state.stories.remove(&story_id) {
+            Some(_) => {
+
+                //NOTE: it is an unexpected behaviour that the .remove() in the match statement seems to not remove this, but that including it again here is removing it
+                db_state.stories.remove(&story_id);
+                eprintln!("{db_state:?}");
+                println!("Story_ID {story_id} removed successfully");
+                self.database.write_db(&db_state)?;
+                Ok(())
+            },
+            None => {
+                Err(anyhow!("No story found at this story id"))
+            }
+        }
+
     }
 
     pub fn update_epic_status(&self, epic_id: DbIndex, status: Status) -> Result<()> {
