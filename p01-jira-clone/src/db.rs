@@ -56,7 +56,9 @@ impl JiraDatabase {
     }
 
     pub fn read_db(&self) -> Result<DBState> {
-        todo!()
+        // todo!()
+        //self contains a JSONFileDatabase which itself has read_db() which reads its file path and returns the Result<DBState> that needs to be returned here
+        self.database.read_db()
     }
 
     pub fn create_epic(&self, epic: Epic) -> Result<DbIndex> {
