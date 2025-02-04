@@ -3,6 +3,7 @@ use std::{fs::File, io::Read};
 
 use anyhow::{anyhow, Context, Result};
 
+use crate::db;
 use crate::models::{DBState, DbIndex, Epic, Status, Story};
 
 trait Database {
@@ -79,7 +80,7 @@ impl JiraDatabase {
     }
 
     pub fn create_story(&self, story: Story, epic_id: DbIndex) -> Result<DbIndex> {
-        todo!()
+        // todo!()
         //read_db to get dbstate
         //increment the last_item_id
         //insert a new story with that id into stories
@@ -87,6 +88,12 @@ impl JiraDatabase {
         //write_db to write new dbstate to db
         //return the last_item_id in an OK
         //use either try operators or anyhow! macros to handle errors
+        let mut db_state = self.database.read_db()?;
+        db_state.last_item_id += 1;
+        db_state.stories.insert(db_state.last_item_id, story);
+        db_state.epics.get(epic_id).expect("No epic found at epic_id").stories.push(db_state.last_item_id);
+        self.database.write_db(&db_state)?;
+        Ok(db_state.last_item_id)
     }
 
     pub fn delete_epic(&self, epic_id: DbIndex) -> Result<()> {
