@@ -49,14 +49,12 @@ pub struct JiraDatabase {
 
 impl JiraDatabase {
     pub fn new(file_path: String) -> Self {
-        // todo!()
         Self {
             database: Box::new(JSONFileDatabase { file_path }),
         }
     }
 
     pub fn read_db(&self) -> Result<DBState> {
-        // todo!()
         //self contains a JSONFileDatabase which itself has read_db() which reads its file path and returns the Result<DBState> that needs to be returned here
         self.database.read_db()
     }
@@ -75,29 +73,56 @@ impl JiraDatabase {
                 self.database.write_db(&db_state).context("Error writing to the database in create_epic")?;
                 Ok(db_state.last_item_id)
             },
-            Err(e) => Err(anyhow!("Error reading database {}", e))
+            Err(e) => Err(anyhow!("Error reading database: {}", e))
         }
 
     }
 
     pub fn create_story(&self, story: Story, epic_id: DbIndex) -> Result<DbIndex> {
         todo!()
+        //read_db to get dbstate
+        //increment the last_item_id
+        //insert a new story with that id into stories
+        //get the epic at epic_id and append last_item_id to its stories vector to map this story's id to that epic
+        //write_db to write new dbstate to db
+        //return the last_item_id in an OK
+        //use either try operators or anyhow! macros to handle errors
     }
 
     pub fn delete_epic(&self, epic_id: DbIndex) -> Result<()> {
         todo!()
+        //read_db to get a dbstate to mutate
+        //delete epic_id key from dbstate.epics hashmap (error handling if key doesn't exist)
+        //write_db
+        //return Ok(())
+        //there will still be the stories that this epic was a part of, now without an associated epic to link them to
+        //you might want to delete all its stories by calling delete_story on each id in its vector before removing it
     }
 
     pub fn delete_story(&self, epic_id: DbIndex, story_id: DbIndex) -> Result<()> {
         todo!()
+        //read_db
+        //delete story_id from stories hashmap
+        //remove story_id from stories vec in epic hashmap at key epic_id
+        //write_db
     }
 
     pub fn update_epic_status(&self, epic_id: DbIndex, status: Status) -> Result<()> {
         todo!()
+        //read_db
+        //get mutable reference to epics hashmap at key epic_id and assign status to its status field
+        //write_db
+        //return Ok(())
     }
 
     pub fn update_story_status(&self, story_id: DbIndex, status: Status) -> Result<()> {
         todo!()
+        //read_db
+        //get mutable reference to stories hashmap at story_id key
+        //assign status to the story.status field
+        //write_db
+        //return Ok(())
+
     }
 }
 
