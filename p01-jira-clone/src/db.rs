@@ -91,7 +91,9 @@ impl JiraDatabase {
         let mut db_state = self.database.read_db()?;
         db_state.last_item_id += 1;
         db_state.stories.insert(db_state.last_item_id, story);
-        db_state.epics.get(epic_id).expect("No epic found at epic_id").stories.push(db_state.last_item_id);
+        // db_state.epics.get(epic_id).expect("No epic found at epic_id").stories.push(db_state.last_item_id);
+        let mut epic = db_state.epics.get(&epic_id).expect("Epic not found at this epic_id");
+        epic.stories.push(db_state.last_item_id);
         self.database.write_db(&db_state)?;
         Ok(db_state.last_item_id)
     }
