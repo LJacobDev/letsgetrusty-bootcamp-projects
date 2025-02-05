@@ -129,6 +129,10 @@ impl JiraDatabase {
 
         eprintln!("{:?}", db_state);
         
+
+        //NOTE:  there is an issue with needing to remove the story from the epic's vector of stories, but I'm iterating on that same vector
+        //       so I might clone the list of story indexes or values so I can iterate over one and modify the other independently
+
         //the epic needs to persist until the stories have been deleted, then remove the epic
         match db_state.epics.get(&epic_id) {
             Some(mut epic) => {
