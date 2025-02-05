@@ -133,21 +133,33 @@ impl JiraDatabase {
         //NOTE:  there is an issue with needing to remove the story from the epic's vector of stories, but I'm iterating on that same vector
         //       so I might clone the list of story indexes or values so I can iterate over one and modify the other independently
 
+        //       What I'll do:
+        //       clone the stories vector to iterate over,
+        //       clear the original stories vector before calling delete story on the iterated list of story ids
+        //       now when delete_story is tested, epic will no longer contain it because it was cleared
+        //       but the iterations across all contained stories can still happen
+
         //the epic needs to persist until the stories have been deleted, then remove the epic
-        match db_state.epics.get(&epic_id) {
-            Some(mut epic) => {
-                for story in epic.stories {
-                    //the delete_story test requires that the epic still exist and that it no longer contains the story_id in order for it to pass
-                    //it involves removing the story from epic.stories while making sure that doing so won't compromise the iteration of the for loop itself
-                    epic.stories.retain(|id| *id != story);
-                    self.delete_story(epic_id, story)?;
-                }
-                db_state.epics.remove(&epic_id);
-            },
-            None => {
-                return Err(anyhow!("No epic found at this epic_id"));
-            }
+
+        let epic = db_state.epics.get_mut(&epic_id);
+
+        if epic == None {
+            return Err(anyhow!("No epic found at this epic id"));
         }
+
+        let epic = epic.unwrap();
+
+        let story_ids = epic.stories.clone();
+        epic.stories.clear();
+
+        for story in story_ids {
+            //the delete_story test requires that the epic still exist and that it no longer contains the story_id in order for it to pass
+            //it involves removing the story from epic.stories while making sure that doing so won't compromise the iteration of the for loop itself
+            // epic.stories.retain(|id| *id != story);
+            self.delete_story(epic_id, story)?;
+        }
+        db_state.epics.remove(&epic_id);
+
 
         eprintln!("{:?}", db_state);
 
