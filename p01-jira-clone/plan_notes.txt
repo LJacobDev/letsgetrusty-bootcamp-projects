@@ -274,6 +274,14 @@ Note 2: Take a look at the test_utils module.  Because JiraDatabase stores a tra
         ... what is left to do:  a few more of the methods of the JiraDatabase such that they can also pass their tests
 
 
+            -- currently, there is an unexpected catch going on with test delete_story_should_work
+
+                -- it has to do with the delete_story_should_work requiring the epic_id to exist but to not have the story_id in it stories vector anymore
+
+                -- I had something that meant to clear that vector out before even iterating on a clone of it, so I expected that to be taken care of already, but it isn't for some reason that shouldn't be too hard to understand after looking at it
+
+
+
         ... then I want to still double check that I'm using proper error handling
 
 

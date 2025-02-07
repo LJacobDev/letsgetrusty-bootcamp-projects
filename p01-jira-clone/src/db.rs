@@ -143,6 +143,8 @@ impl JiraDatabase {
 
         let epic = db_state.epics.get_mut(&epic_id);
 
+        eprintln!(" epic is a: {epic:?}");
+
         if epic == None {
             return Err(anyhow!("No epic found at this epic id"));
         }
@@ -152,13 +154,14 @@ impl JiraDatabase {
         let story_ids = epic.stories.clone();
         epic.stories.clear();
 
+        db_state.epics.remove(&epic_id);
+        
         for story in story_ids {
             //the delete_story test requires that the epic still exist and that it no longer contains the story_id in order for it to pass
             //it involves removing the story from epic.stories while making sure that doing so won't compromise the iteration of the for loop itself
             // epic.stories.retain(|id| *id != story);
             self.delete_story(epic_id, story)?;
         }
-        db_state.epics.remove(&epic_id);
 
 
         eprintln!("{:?}", db_state);
@@ -182,16 +185,19 @@ impl JiraDatabase {
 
         let mut db_state = self.database.read_db()?;
 
+        if let None = db_state.epics.get(&epic_id) {
+            return Err(anyhow!("No epic found with this epic_id"));
+        }
+
         //this code block is expecting db_state to mutate so that the story at story_id is no longer present,
         //but the cargo test run is showing that the story is still contained inside of it even though it's saying "story_id removed successfully"
         eprintln!("{db_state:?}");
         match db_state.stories.remove(&story_id) {
             Some(_) => {
 
-                //NOTE: it is an unexpected behaviour that the .remove() in the match statement seems to not remove this, but that including it again here is removing it
-                db_state.stories.remove(&story_id);
                 eprintln!("{db_state:?}");
                 println!("Story_ID {story_id} removed successfully");
+                eprintln!("immediate db_state is now: {db_state:?}");
                 self.database.write_db(&db_state)?;
                 Ok(())
             },
