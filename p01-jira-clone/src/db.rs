@@ -237,11 +237,24 @@ impl JiraDatabase {
     }
 
     pub fn update_epic_status(&self, epic_id: DbIndex, status: Status) -> Result<()> {
-        todo!()
+        // todo!()
         //read_db
         //get mutable reference to epics hashmap at key epic_id and assign status to its status field
         //write_db
         //return Ok(())
+
+        let mut db_state = self.read_db()?;
+
+        let epic = db_state.epics.get_mut(&epic_id); 
+        match epic {
+            Some(epic) => {
+                epic.status = status;
+                self.database.write_db(&db_state)?;
+                Ok(())
+            },
+            None => Err(anyhow!("No epic found at this ID"))
+        }
+
     }
 
     pub fn update_story_status(&self, story_id: DbIndex, status: Status) -> Result<()> {

@@ -285,7 +285,15 @@ Note 2: Take a look at the test_utils module.  Because JiraDatabase stores a tra
 
                 -- delete_story_should_work doesn't call delete_epic at all, so having delete_epic handle removing the story from its vector won't work on that test at all, so it makes it clear that delete_story has to handle that itself
 
-                
+                -- these both pass their tests now, and all that is left is to get the update methods to be implemented and pass their tests,
+
+                then this section will be complete outside of any refactoring, code cleanup and so on
+
+                then I'll be able to move to stage 2 step 1 and see what differences there were between my implementation and what was done in that starter code's version of it
+
+
+
+          
 
 
 
@@ -293,7 +301,6 @@ Note 2: Take a look at the test_utils module.  Because JiraDatabase stores a tra
 
 
 
-        ... then I want to still double check that I'm using proper error handling
 
 
 
