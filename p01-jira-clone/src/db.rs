@@ -258,12 +258,24 @@ impl JiraDatabase {
     }
 
     pub fn update_story_status(&self, story_id: DbIndex, status: Status) -> Result<()> {
-        todo!()
+        // todo!()
         //read_db
         //get mutable reference to stories hashmap at story_id key
         //assign status to the story.status field
         //write_db
         //return Ok(())
+        let mut db_state = self.read_db()?;
+
+        let story = db_state.stories.get_mut(&story_id);
+
+        match story {
+            Some(story) => {
+                story.status = status;
+                self.database.write_db(&db_state)?;
+                Ok(())
+            },
+            None => Err(anyhow!("No story found at this story ID"))
+        }
 
     }
 }
