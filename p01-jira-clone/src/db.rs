@@ -152,19 +152,23 @@ impl JiraDatabase {
         let epic = epic.unwrap();
 
         let story_ids = epic.stories.clone();
-        epic.stories.clear();
+        // epic.stories.clear();
 
-        db_state.epics.remove(&epic_id);
         
         for story in story_ids {
             //the delete_story test requires that the epic still exist and that it no longer contains the story_id in order for it to pass
             //it involves removing the story from epic.stories while making sure that doing so won't compromise the iteration of the for loop itself
-            // epic.stories.retain(|id| *id != story);
             self.delete_story(epic_id, story)?;
+            
         }
+        
+        db_state = self.read_db().unwrap();
 
+        eprintln!("db_state after running self.delete_story inside of delete_epic: {:?}", db_state);
 
-        eprintln!("{:?}", db_state);
+        db_state.epics.remove(&epic_id);
+
+        eprintln!("db_state after running db_state.epics.remove() inside of delete_epic: {:?}", db_state);
 
         self.database.write_db(&db_state)?;
         
@@ -185,8 +189,32 @@ impl JiraDatabase {
 
         let mut db_state = self.database.read_db()?;
 
-        if let None = db_state.epics.get(&epic_id) {
+        let epic = db_state.epics.get_mut(&epic_id);
+
+        if let None = epic {
             return Err(anyhow!("No epic found with this epic_id"));
+        }
+
+        let epic = epic.unwrap();
+
+        // to remove this story_id from its epic's vector of stories, it seems to need to check the whole vector until it finds it
+        // binary search would speed this up, as it should be the case that the vector of stories would be sorted ascending by
+        // nature of the way that it is made with each newly added item being increasing item_id values,
+        // but this would break if transferring stories between epics were ever to be enabled,
+        // but then another workaround would be to sort the vector before searching it, but that might take more steps in total
+        // than just doing linear search here anyway
+        
+        // I like this commented out line but I want to use something that has better error handling
+        // epic.stories.remove(epic.stories.iter().position(|&x| x == story_id).unwrap());
+
+        if !epic.stories.contains(&story_id) {
+            return Err(anyhow!("Story_id not found in this epic"));
+        }
+
+        for i in 0..epic.stories.len() {
+            if epic.stories[i] == story_id {
+                epic.stories.remove(i);
+            }
         }
 
         //this code block is expecting db_state to mutate so that the story at story_id is no longer present,
@@ -202,7 +230,7 @@ impl JiraDatabase {
                 Ok(())
             },
             None => {
-                Err(anyhow!("No story found at this story id"))
+                Err(anyhow!("No this story_id was not found in the stories hash map"))
             }
         }
 

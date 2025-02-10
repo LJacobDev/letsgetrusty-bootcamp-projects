@@ -281,6 +281,17 @@ Note 2: Take a look at the test_utils module.  Because JiraDatabase stores a tra
                 -- I had something that meant to clear that vector out before even iterating on a clone of it, so I expected that to be taken care of already, but it isn't for some reason that shouldn't be too hard to understand after looking at it
 
 
+            -- I am beginning to notice that I should be thinking about this differently
+
+                -- delete_story_should_work doesn't call delete_epic at all, so having delete_epic handle removing the story from its vector won't work on that test at all, so it makes it clear that delete_story has to handle that itself
+
+                
+
+
+
+
+
+
 
         ... then I want to still double check that I'm using proper error handling
 
