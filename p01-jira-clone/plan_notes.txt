@@ -287,13 +287,23 @@ Note 2: Take a look at the test_utils module.  Because JiraDatabase stores a tra
 
                 -- these both pass their tests now, and all that is left is to get the update methods to be implemented and pass their tests,
 
-                then this section will be complete outside of any refactoring, code cleanup and so on
 
-                then I'll be able to move to stage 2 step 1 and see what differences there were between my implementation and what was done in that starter code's version of it
+                I've completed all the todos for stage 1 step 3 including following the details of the two extra notes
+
+                this section is complete now outside of any refactoring, code cleanup and so on
+
+                
+                
+                
+                next I can move to stage 2 step 1 and see what differences there were between my implementation and what was done in that starter code's version of it
 
 
 
-          
+
+Stage 2 Step 1:
+
+
+
 
 
 
