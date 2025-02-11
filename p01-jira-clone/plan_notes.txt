@@ -303,6 +303,17 @@ Note 2: Take a look at the test_utils module.  Because JiraDatabase stores a tra
 Stage 2 Step 1:
 
 
+    I've looked at the stage 2 overview,
+
+    next things to do:
+    
+        is to copy over the starter files,
+
+        but also to look at the implementations in these starter files of the previous stage to compare it to what I did 
+
+        then complete the TODOs while following any extra Notes about what/how to do things
+
+
 
 
 
